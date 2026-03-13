@@ -1,11 +1,74 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.js";
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-portto-black: #0B0B1B;
+    --color-portto-purple: #4920E5;
+    --color-portto-light-gold: #FFE7C2;
+    --color-portto-green: #12BB74;
+    --color-portto-red: #E64D56;
+
+    --font-poppins: "Poppins", sans-serif;
+}
+
+/* ===== Base ===== */
+body {
+    font-family: var(--font-poppins);
+}
+
+/* ===== Helper Classes ===== */
+.pause-animate {
+    animation-play-state: paused;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease-in-out;
+}
+
+.project-container,
+.logo-container {
+    will-change: transform;
+}
+
+/* ===== Keyframes ===== */
+@keyframes slide {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideToR {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes slideToT {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+@keyframes slideToB {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
 }

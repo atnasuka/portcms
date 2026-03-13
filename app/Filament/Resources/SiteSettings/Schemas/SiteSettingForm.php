@@ -15,39 +15,65 @@ class SiteSettingForm
             ->components([
                 TextInput::make('site_name')
                     ->default(null),
+
                 TextInput::make('site_tagline')
                     ->default(null),
+
                 Textarea::make('site_description')
                     ->default(null)
                     ->columnSpanFull(),
-                TextInput::make('logo')
-                    ->default(null),
-                TextInput::make('favicon')
-                    ->default(null),
+
+                FileUpload::make('logo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('site-settings')
+                    ->visibility('public'),
+
+                FileUpload::make('favicon')
+                    ->image()
+                    ->disk('public')
+                    ->directory('site-settings')
+                    ->visibility('public'),
+
                 FileUpload::make('default_og_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('site-settings')
+                    ->visibility('public'),
+
                 TextInput::make('contact_email')
                     ->email()
                     ->default(null),
+
                 TextInput::make('contact_phone')
                     ->tel()
                     ->default(null),
+
                 Textarea::make('address')
                     ->default(null)
                     ->columnSpanFull(),
+
                 TextInput::make('hero_name')
                     ->default(null),
+
                 TextInput::make('hero_title')
                     ->default(null),
+
                 Textarea::make('hero_subtitle')
                     ->default(null)
                     ->columnSpanFull(),
+
                 TextInput::make('hero_button_text')
                     ->default(null),
+
                 TextInput::make('hero_button_link')
                     ->default(null),
+
                 FileUpload::make('hero_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('site-settings')
+                    ->visibility('public'),
             ]);
     }
 }

@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProjectOrder extends CreateRecord
 {
     protected static string $resource = ProjectOrderResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -19,9 +19,9 @@ class SiteSettingsTable
                     ->searchable(),
                 TextColumn::make('site_tagline')
                     ->searchable(),
-                TextColumn::make('logo')
+                ImageColumn::make('logo')
                     ->searchable(),
-                TextColumn::make('favicon')
+                ImageColumn::make('favicon')
                     ->searchable(),
                 ImageColumn::make('default_og_image'),
                 TextColumn::make('contact_email')
