@@ -9,6 +9,7 @@ use App\Models\SiteSetting;
 use App\Models\Testimonial;
 use Illuminate\View\View;
 use App\Models\Stat;
+use App\Models\Service;
 
 class HomeController extends Controller
 {
@@ -43,13 +44,19 @@ class HomeController extends Controller
             ->limit(5)
             ->get();
 
+        $services = Service::query()
+            ->where('is_active', true)
+            ->orderBy('order_no')
+            ->get();
+
         return view('home', compact(
             'siteSetting',
             'projects',
             'testimonials',
             'faqs',
             'latestPosts',
-            'stats'
+            'stats',
+            'services'
         ));
     }
 }

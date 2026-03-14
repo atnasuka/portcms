@@ -3,61 +3,7 @@
 @section('content')
 <section id="Header" class="flex flex-col gap-[60px] md:gap-[100px] bg-portto-black relative">
     {{-- Navbar --}}
-    <nav id="mainNavbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div id="navbarInner" class="container max-w-[1130px] mx-auto flex justify-between items-center px-4 md:px-6 lg:px-0 py-4 md:py-6 transition-all duration-300">
-            <a href="{{ route('home') }}" class="flex shrink-0 h-fit w-fit z-50">
-                @if(!empty($siteSetting?->logo))
-                    <img src="{{ asset('storage/' . $siteSetting->logo) }}" alt="logo" class="h-10 md:h-auto">
-                @else
-                    <span class="text-white font-bold text-xl md:text-2xl">
-                        {{ $siteSetting->site_name ?? 'Logo' }}
-                    </span>
-                @endif
-            </a>
-
-            {{-- Desktop Menu --}}
-            <div class="hidden lg:flex gap-[40px] items-center">
-                <ul class="flex gap-[30px] xl:gap-[50px] items-center text-white">
-                    <li><a href="{{ route('home') }}" class="font-medium text-base xl:text-lg hover:text-portto-light-gold transition-all duration-300">Home</a></li>
-                    <li><a href="#Services" class="font-medium text-base xl:text-lg hover:text-portto-light-gold transition-all duration-300">Services</a></li>
-                    <li><a href="#Testimonials" class="font-medium text-base xl:text-lg hover:text-portto-light-gold transition-all duration-300">Testimonials</a></li>
-                    <li><a href="{{ route('blog.index') }}" class="font-medium text-base xl:text-lg hover:text-portto-light-gold transition-all duration-300">Blog</a></li>
-                    <li><a href="#FAQ" class="font-medium text-base xl:text-lg hover:text-portto-light-gold transition-all duration-300">About</a></li>
-                </ul>
-
-                <a href="{{ route('booking.create') }}"
-                    class="bg-portto-light-gold font-bold text-base xl:text-lg px-6 py-3 rounded-full transition-all duration-300 hover:shadow-[0_10px_20px_0_#FFE7C280]">
-                    Hire Me
-                </a>
-            </div>
-
-            {{-- Mobile Menu Button --}}
-            <button id="mobileMenuButton"
-                class="lg:hidden flex flex-col gap-1.5 z-50"
-                type="button"
-                aria-label="Toggle menu">
-                <span class="w-7 h-0.5 bg-white rounded transition-all duration-300"></span>
-                <span class="w-7 h-0.5 bg-white rounded transition-all duration-300"></span>
-                <span class="w-7 h-0.5 bg-white rounded transition-all duration-300"></span>
-            </button>
-        </div>
-
-        {{-- Mobile Menu --}}
-        <div id="mobileMenu" class="lg:hidden hidden bg-portto-black/95 backdrop-blur-md border-t border-white/10">
-            <div class="container max-w-[1130px] mx-auto px-4 py-5 flex flex-col gap-4 text-white">
-                <a href="{{ route('home') }}" class="font-medium text-base hover:text-portto-light-gold transition-all duration-300">Home</a>
-                <a href="#Services" class="font-medium text-base hover:text-portto-light-gold transition-all duration-300">Services</a>
-                <a href="#Testimonials" class="font-medium text-base hover:text-portto-light-gold transition-all duration-300">Testimonials</a>
-                <a href="{{ route('blog.index') }}" class="font-medium text-base hover:text-portto-light-gold transition-all duration-300">Blog</a>
-                <a href="#FAQ" class="font-medium text-base hover:text-portto-light-gold transition-all duration-300">About</a>
-
-                <a href="{{ route('booking.create') }}"
-                    class="bg-portto-light-gold text-portto-black text-center font-bold text-base px-6 py-3 rounded-full transition-all duration-300">
-                    Hire Me
-                </a>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     {{-- Hero --}}
     <div class="hero container max-w-[1130px] mx-auto flex flex-col-reverse lg:flex-row justify-between items-center relative px-4 md:px-6 lg:px-0 pt-[120px] md:pt-[140px]">
@@ -128,53 +74,74 @@
                 Actually, I Do Design <br>& Code for Living
             </h2>
 
-            <a href="{{ route('booking.create') }}" class="font-bold text-lg bg-portto-black rounded-full w-fit h-fit px-[30px] py-[14px] text-white transition-all duration-300 hover:bg-white hover:text-portto-black hover:ring hover:ring-portto-black">
+            <a href="{{ route('services.index') }}" class="font-bold text-lg bg-portto-black rounded-full w-fit h-fit px-[30px] py-[14px] text-white transition-all duration-300 hover:bg-white hover:text-portto-black hover:ring hover:ring-portto-black">
                 All Services
             </a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
-            <div class="p-[30px] md:p-[50px] pb-0 rounded-[30px] flex flex-col gap-[30px] md:gap-[50px] bg-[#F4F5F8]">
-                <div class="flex items-center justify-center shrink-0 w-20 h-20 rounded-full bg-portto-purple">
-                    <img src="{{ asset('images/icons/crown.svg') }}" class="w-10 h-10 object-contain" alt="icon">
-                </div>
-                <div class="flex flex-col gap-5">
-                    <p class="font-extrabold text-[24px] leading-[36px] md:text-[32px] md:leading-[48px]">High-Quality Mobile App UI/UX Design</p>
-                    <p class="text-base md:text-lg leading-[30px] md:leading-[34px]">Delivering great experience to users so that they are comfortable while using your product.</p>
-                </div>
-                <div class="w-full h-[220px] md:h-[350px]">
-                    <img src="{{ asset('images/services1.png') }}" class="w-full h-full object-contain" alt="image">
-                </div>
-            </div>
+        @if($services->count())
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-[30px]">
+                @foreach($services->take(3) as $index => $service)
+                    @if($index < 2)
+                        <a href="{{ route('services.show', $service->slug) }}"
+                           class="p-[30px] md:p-[50px] pb-0 rounded-[30px] flex flex-col gap-[30px] md:gap-[50px] transition-all duration-300 hover:-translate-y-1"
+                           style="background-color: {{ $service->background_color ?? '#F4F5F8' }};">
+                            <div class="flex items-center justify-center shrink-0 w-20 h-20 rounded-full"
+                                 style="background-color: {{ $service->icon_background_color ?? '#4920E5' }};">
+                                @if($service->icon)
+                                    <img src="{{ asset('storage/' . $service->icon) }}" class="w-10 h-10 object-contain" alt="{{ $service->title }}">
+                                @endif
+                            </div>
 
-            <div class="p-[30px] md:p-[50px] pb-0 rounded-[30px] flex flex-col gap-[30px] md:gap-[50px] bg-[#F4F5F8]">
-                <div class="flex items-center justify-center shrink-0 w-20 h-20 rounded-full bg-portto-green">
-                    <img src="{{ asset('images/icons/code.svg') }}" class="w-10 h-10 object-contain" alt="icon">
-                </div>
-                <div class="flex flex-col gap-5">
-                    <p class="font-extrabold text-[24px] leading-[36px] md:text-[32px] md:leading-[48px]">AI Business Dashboard Finance Company</p>
-                    <p class="text-base md:text-lg leading-[30px] md:leading-[34px]">Delivering great experience to users so that they are comfortable while using product.</p>
-                </div>
-                <div class="w-full h-[220px] md:h-[350px]">
-                    <img src="{{ asset('images/services2.png') }}" class="w-full h-full object-contain" alt="image">
-                </div>
-            </div>
+                            <div class="flex flex-col gap-5">
+                                <p class="font-extrabold text-[24px] leading-[36px] md:text-[32px] md:leading-[48px]">{{ $service->title }}</p>
+                                <p class="text-base md:text-lg leading-[30px] md:leading-[34px]">{{ $service->short_description ?? $service->description }}</p>
+                            </div>
 
-            <div class="col-span-1 lg:col-span-2 p-[30px] md:p-[50px] pb-0 rounded-[30px] flex flex-col lg:flex-row gap-[30px] lg:gap-[50px] bg-[#F4F5F8]">
-                <div class="flex flex-col gap-[30px] md:gap-[50px]">
-                    <div class="flex items-center justify-center shrink-0 w-20 h-20 rounded-full bg-portto-red">
-                        <img src="{{ asset('images/icons/3dcube.svg') }}" class="w-10 h-10 object-contain" alt="icon">
-                    </div>
-                    <div class="flex flex-col gap-5">
-                        <p class="font-extrabold text-[24px] leading-[36px] md:text-[32px] md:leading-[48px]">Robust Plugins Connected Machine Learning</p>
-                        <p class="text-base md:text-lg leading-[30px] md:leading-[34px]">Delivering great experience to users so that they are comfortable while using your product to grow.</p>
-                    </div>
-                </div>
-                <div class="w-full lg:w-[450px] h-[220px] md:h-[350px] flex shrink-0">
-                    <img src="{{ asset('images/services3.png') }}" class="w-full h-full object-contain" alt="image">
-                </div>
+                            <div class="w-full h-[220px] md:h-[350px]">
+                                @if($service->card_image)
+                                    <img src="{{ asset('storage/' . $service->card_image) }}" class="w-full h-full object-contain" alt="{{ $service->title }}">
+                                @endif
+                            </div>
+                        </a>
+                    @endif
+                @endforeach
+
+                @if($services->count() >= 3)
+                    @php $thirdService = $services->values()->get(2); @endphp
+
+                    @if($thirdService)
+                        <a href="{{ route('services.show', $thirdService->slug) }}"
+                           class="col-span-1 lg:col-span-2 p-[30px] md:p-[50px] pb-0 rounded-[30px] flex flex-col lg:flex-row gap-[30px] lg:gap-[50px] transition-all duration-300 hover:-translate-y-1"
+                           style="background-color: {{ $thirdService->background_color ?? '#F4F5F8' }};">
+                            <div class="flex flex-col gap-[30px] md:gap-[50px]">
+                                <div class="flex items-center justify-center shrink-0 w-20 h-20 rounded-full"
+                                     style="background-color: {{ $thirdService->icon_background_color ?? '#E64D56' }};">
+                                    @if($thirdService->icon)
+                                        <img src="{{ asset('storage/' . $thirdService->icon) }}" class="w-10 h-10 object-contain" alt="{{ $thirdService->title }}">
+                                    @endif
+                                </div>
+
+                                <div class="flex flex-col gap-5">
+                                    <p class="font-extrabold text-[24px] leading-[36px] md:text-[32px] md:leading-[48px]">{{ $thirdService->title }}</p>
+                                    <p class="text-base md:text-lg leading-[30px] md:leading-[34px]">{{ $thirdService->short_description ?? $thirdService->description }}</p>
+                                </div>
+                            </div>
+
+                            <div class="w-full lg:w-[450px] h-[220px] md:h-[350px] flex shrink-0">
+                                @if($thirdService->card_image)
+                                    <img src="{{ asset('storage/' . $thirdService->card_image) }}" class="w-full h-full object-contain" alt="{{ $thirdService->title }}">
+                                @endif
+                            </div>
+                        </a>
+                    @endif
+                @endif
             </div>
-        </div>
+        @else
+            <div class="text-center">
+                <p class="text-lg text-[#878C9C]">No services available yet.</p>
+            </div>
+        @endif
     </div>
 </section>
 
@@ -448,7 +415,7 @@
     </div>
 </section>
 
-<footer class="bg-portto-black text-white pb-[50px] border-t-[10px] border-portto-purple overflow-hidden">
+{{-- <footer class="bg-portto-black text-white pb-[50px] border-t-[10px] border-portto-purple overflow-hidden">
     <div class="container max-w-[1130px] mx-auto px-4 md:px-6 lg:px-0 flex flex-col lg:flex-row justify-between gap-10 pt-[60px] md:pt-[100px] pb-[50px] mb-[50px] relative border-b border-[#585867]">
         <img src="{{ asset('images/Ellipse.svg') }}" class="absolute h-[300px] top-[70px] -left-[20px] z-0" alt="icon">
 
@@ -482,7 +449,8 @@
     <p class="text-sm text-[#A0A0AC] text-center">
         All Rights Reserved. Copyright {{ date('Y') }}.
     </p>
-</footer>
+</footer> --}}
+@include('partials.footer')
 @endsection
 
 @push('scripts')
